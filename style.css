@@ -1,3 +1,9 @@
+@font-face {
+	font-family: 'Jetbrains Mono';
+	font-style: normal;
+	src: url('https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/ttf/JetBrainsMono-Regular.ttf');
+}
+
 * {
 	font-family: 'Jetbrains Mono';
 	vertical-align: middle;
