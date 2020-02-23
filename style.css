@@ -35,6 +35,15 @@ h1 {
 	margin: auto;
 }
 
+#howtouse {
+	color: whitesmoke;
+	background-color: lightseagreen;
+}
+
+#howtouse span {
+	font-size: small;
+}
+
 #output {
 	font-size: x-large;
 	color: seagreen;
