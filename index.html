@@ -24,13 +24,15 @@
 	</div>
 	<div>Ratio: <span id="input">0</span></div>
 	<div id="output">0</div>
+	<div>New ratio: <span id="newratio">0</span></div>
 </body>
 <script>
 	// Input Element
 	let input = document.getElementById("input");
 	let output = document.getElementById("output");
+	let newratio = document.getElementById("newratio");
 	let nachkommastellen = 0;
-	let e12 = [1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 6.8, 8.2];
+	const e12 = [1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 6.8, 8.2];
 
 	function e12_index(number) {
 		return Math.round(Math.log10(Math.pow(number, 12)));
@@ -56,6 +58,7 @@
 		}
 
 		output.innerText = value + ", " + e_value;
+		newratio.innerText = value/e_value;
 	}
 
 	document.addEventListener("keydown", (ev) => {
@@ -75,6 +78,7 @@
 			break;
 		case 27: // Escape
 			input.innerText = "0";
+			nachkommastellen = 0;
 			break;
 		default: // Other keys
 			if (keycode >= 48 && keycode <= 57) {
