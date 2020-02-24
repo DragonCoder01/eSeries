@@ -25,9 +25,10 @@
 	<div>Ratio: <span id="input">0</span></div>
 	<div id="output">0</div>
 	<div>New ratio: <span id="newratio">0</span></div>
+	<div>Error: <span id="error">0</span></div>
 	<div id="howtouse">
 		<h5>How to use</h5>
-		<span>Just start typing in your desired ratio. The ratio span from around 0.1 to 9.9 should work, but at those "extremes" it might not work. I'll be working on a fix!</span>
+		<span>Just start typing in your desired ratio. My program will calculate the best e12 ratio.</span>
 	</div>
 </body>
 <script>
@@ -35,6 +36,7 @@
 	let input = document.getElementById("input");
 	let output = document.getElementById("output");
 	let newratio = document.getElementById("newratio");
+	let error = document.getElementById("error");
 	let nachkommastellen = 0;
 	const e12 = [1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 6.8, 8.2];
 
@@ -48,21 +50,40 @@
 
 	function update(ratio) {
 		let minerror = 10000000000;
-		let value = -1;
-		let e_value = -1;
-		for (let e of e12) {
-			let v = e12_value(e*ratio);
-			let distance = Math.abs(v/e - ratio);
-			if (distance < minerror) {
-				minerror = distance;
-				value = v;
-				e_value = e;
-				console.log(e);
-			}
-		}
+		let real_r1 = -1;
+		let real_r2 = -1;
+		if (ratio != 0) {
+			for (let r1 of e12) {
+				let exp = 0;
+				while(ratio >= 10) {
+					ratio /= 10;
+					exp--;
+				}
+				while(ratio < 1) {
+					ratio *= 10;
+					exp--;
+				}
 
-		output.innerText = value + ", " + e_value;
-		newratio.innerText = value/e_value;
+				let r2 = e12_value(r1*ratio);
+				let error = Math.abs((r2/r1 - ratio) / ratio);
+				if (error < minerror) {
+					minerror = error;
+					real_r1 = r1;
+					real_r2 = r2 * Math.pow(10, exp);
+				}
+			}
+			newratio.innerText = (real_r2/real_r1).toFixed(4);
+		} else {
+			real_r1 = 0;
+			real_r2 = 0;
+			minerror = 0;
+			
+			newratio.innerText = 0;
+		}
+		
+		output.innerText = real_r2 + ", " + real_r1;
+		error.innerText = (minerror*100).toFixed(4) + " %";
+		
 	}
 
 	document.addEventListener("keydown", (ev) => {
